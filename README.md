@@ -5,15 +5,7 @@
 [![GitHub Code Style Action Status](https://img.shields.io/github/actions/workflow/status/pardalsalcap/linter-redirections/fix-php-code-style-issues.yml?branch=main&label=code%20style&style=flat-square)](https://github.com/pardalsalcap/linter-redirections/actions?query=workflow%3A"Fix+PHP+code+style+issues"+branch%3Amain)
 [![Total Downloads](https://img.shields.io/packagist/dt/pardalsalcap/linter-redirections.svg?style=flat-square)](https://packagist.org/packages/pardalsalcap/linter-redirections)
 
-This is where your description should go. Limit it to a paragraph or two. Consider adding a small example.
-
-## Support us
-
-[<img src="https://github-ads.s3.eu-central-1.amazonaws.com/linter-redirections.jpg?t=1" width="419px" />](https://spatie.be/github-ad-click/linter-redirections)
-
-We invest a lot of resources into creating [best in class open source packages](https://spatie.be/open-source). You can support us by [buying one of our paid products](https://spatie.be/open-source/support-us).
-
-We highly appreciate you sending us a postcard from your hometown, mentioning which of our package(s) you are using. You'll find our address on [our contact page](https://spatie.be/about-us). We publish all received postcards on [our virtual postcard wall](https://spatie.be/open-source/postcards).
+This package is and add on to the linter panel to manage 404 and redirections. It includes a filament resource for managng and redirecting 404 and 2 widgets for the dashboard to get the information of the 404 and redirections.
 
 ## Installation
 
@@ -43,32 +35,66 @@ return [
 ];
 ```
 
-Optionally, you can publish the views using
-
-```bash
-php artisan vendor:publish --tag="linter-redirections-views"
-```
-
 ## Usage
 
+To register the 404 or any Exception you like to monitor you can add the following code to your `app/Exceptions/Handler.php` file:
+
 ```php
-$linterRedirections = new Pardalsalcap\LinterRedirections();
-echo $linterRedirections->echoPhrase('Hello, Pardalsalcap!');
+use Pardalsalcap\LinterRedirections\Repositories\RedirectionRepository;
+
+public function render($request, Throwable $e) {
+    switch(class_basename($e)){
+        case 'NotFoundHttpException':
+            $http_status = $e->getStatusCode();
+
+            $redirection_repository = new RedirectionRepository();
+            $redirection = $redirection_repository->check(request()->fullUrl());
+            if ($redirection) {
+                return redirect($redirection->fix, $redirection->http_status);
+            }
+
+            if ($http_status == "404")
+            {
+                $redirection_repository->logError(request()->fullUrl(), $http_status);
+            }
+        break;
+    }
+    return parent::render($request, $e); 
+}
 ```
 
-## Testing
+If you want to log any other exception you can add it to the switch case.
 
-```bash
-composer test
+## Resources
+
+You can extend the RedirecionsResource to add the ability to manage the redirections from the filament panel. 
+To do so you can create a Resource like this:
+
+```php
+<?php
+
+namespace App\Filament\Resources;
+
+class RedirectionResource extends \Pardalsalcap\LinterRedirections\Resources\RedirectionResource
+{
+   // Any additional logic here
+}
+
+```
+
+## Widgets
+
+To add the widgets to the dashboard you can add the following code to your filament panel widgets section:
+
+```php  
+    RedirectionsStats::class,
+    RedirectionsDashboardWidget::class,
 ```
 
 ## Changelog
 
 Please see [CHANGELOG](CHANGELOG.md) for more information on what has changed recently.
 
-## Contributing
-
-Please see [CONTRIBUTING](CONTRIBUTING.md) for details.
 
 ## Security Vulnerabilities
 
