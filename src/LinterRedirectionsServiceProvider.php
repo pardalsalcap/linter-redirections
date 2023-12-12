@@ -2,9 +2,9 @@
 
 namespace Pardalsalcap\LinterRedirections;
 
+use Pardalsalcap\LinterRedirections\Commands\LinterRedirectionsCommand;
 use Spatie\LaravelPackageTools\Package;
 use Spatie\LaravelPackageTools\PackageServiceProvider;
-use Pardalsalcap\LinterRedirections\Commands\LinterRedirectionsCommand;
 
 class LinterRedirectionsServiceProvider extends PackageServiceProvider
 {
