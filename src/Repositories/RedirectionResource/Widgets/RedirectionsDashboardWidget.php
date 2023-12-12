@@ -23,24 +23,23 @@ class RedirectionsDashboardWidget extends BaseWidget
 
     protected function getTableHeading(): string|Htmlable|null
     {
-        return __("linter-redirections::redirections.widget_title");
+        return __('linter-redirections::redirections.widget_title');
     }
-
 
     protected function getTableColumns(): array
     {
         return [
             TextColumn::make('url')
-                ->label(__("linter-redirections::redirections.url_column"))
-                ->url(fn(Redirection $redirection) => $redirection->url)
+                ->label(__('linter-redirections::redirections.url_column'))
+                ->url(fn (Redirection $redirection) => $redirection->url)
                 ->openUrlInNewTab(true)
                 ->formatStateUsing(function ($record) {
-                    return $record->url . "<br />" . $record->fix;
+                    return $record->url.'<br />'.$record->fix;
                 })
                 ->html()
                 ->searchable(),
             TextColumn::make('http_status')
-                ->label(__("linter-redirections::redirections.http_status_column"))
+                ->label(__('linter-redirections::redirections.http_status_column'))
                 ->searchable(),
             TextColumn::make('created_at')
                 ->label(__('linter-redirections::redirections.created_at_column'))
@@ -53,7 +52,7 @@ class RedirectionsDashboardWidget extends BaseWidget
     {
         return [
             Tables\Actions\EditAction::make()
-                ->url(fn(Redirection $redirection) => RedirectionResource::getUrl() . "/" . $redirection->id . '/edit/'),
+                ->url(fn (Redirection $redirection) => RedirectionResource::getUrl().'/'.$redirection->id.'/edit/'),
         ];
     }
 
@@ -61,7 +60,7 @@ class RedirectionsDashboardWidget extends BaseWidget
     {
         return [
             Tables\Actions\Action::make('View all')
-                ->label(__("linter-redirections::redirections.view_all"))
+                ->label(__('linter-redirections::redirections.view_all'))
                 ->url(RedirectionResource::getUrl()),
         ];
     }
@@ -70,5 +69,4 @@ class RedirectionsDashboardWidget extends BaseWidget
     {
         return false;
     }
-
 }

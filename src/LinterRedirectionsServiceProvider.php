@@ -4,7 +4,6 @@ namespace Pardalsalcap\LinterRedirections;
 
 use Spatie\LaravelPackageTools\Package;
 use Spatie\LaravelPackageTools\PackageServiceProvider;
-use Pardalsalcap\LinterRedirections\Commands\LinterRedirectionsCommand;
 
 class LinterRedirectionsServiceProvider extends PackageServiceProvider
 {
@@ -19,7 +18,6 @@ class LinterRedirectionsServiceProvider extends PackageServiceProvider
             ->name('linter-redirections')
             ->hasConfigFile()
             ->hasTranslations()
-            ->hasMigration('create_linter_redirections_table')
-          ;
+            ->hasMigration('create_linter_redirections_table');
     }
 }

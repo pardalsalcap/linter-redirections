@@ -16,12 +16,12 @@ class ListRedirections extends ListRecords
     {
         return [
             Action::make('deletePending')
-                ->action(function (){
-                    Redirection::whereNull("fix")->delete();
+                ->action(function () {
+                    Redirection::whereNull('fix')->delete();
                 })
-                ->badge(fn () => Redirection::whereNull("fix")->count())
-                ->label(__("linter-redirections::redirections.delete_pending"))
-                ->visible(fn () => Redirection::whereNull("fix")->count() > 0)
+                ->badge(fn () => Redirection::whereNull('fix')->count())
+                ->label(__('linter-redirections::redirections.delete_pending'))
+                ->visible(fn () => Redirection::whereNull('fix')->count() > 0)
                 ->requiresConfirmation(),
             Actions\CreateAction::make(),
         ];

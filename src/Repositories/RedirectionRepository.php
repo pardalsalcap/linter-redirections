@@ -2,14 +2,14 @@
 
 namespace Pardalsalcap\LinterRedirections\Repositories;
 
-use Pardalsalcap\LinterRedirections\Models\Redirection;
 use Illuminate\Support\Facades\Validator;
+use Pardalsalcap\LinterRedirections\Models\Redirection;
 
 class RedirectionRepository
 {
     protected ?Redirection $redirection = null;
 
-    public function check($url):Redirection|null
+    public function check($url): ?Redirection
     {
         return Redirection::where('hash', $this->hash($url))
             ->whereNotNull('fix')
@@ -18,7 +18,7 @@ class RedirectionRepository
             ->first();
     }
 
-    public function status():array
+    public function status(): array
     {
         return [
             '301' => __('linter-redirections::redirections.http_status_301'),
@@ -28,12 +28,12 @@ class RedirectionRepository
         ];
     }
 
-    public function hash($url):string
+    public function hash($url): string
     {
         return md5($url);
     }
 
-    public function logError($url, $http_status = 404, $fix = null):void
+    public function logError($url, $http_status = 404, $fix = null): void
     {
         $arr = [
             'url' => $url,
