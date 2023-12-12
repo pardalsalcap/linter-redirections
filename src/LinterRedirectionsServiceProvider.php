@@ -18,8 +18,8 @@ class LinterRedirectionsServiceProvider extends PackageServiceProvider
         $package
             ->name('linter-redirections')
             ->hasConfigFile()
-            ->hasViews()
-            ->hasMigration('create_linter-redirections_table')
-            ->hasCommand(LinterRedirectionsCommand::class);
+            ->hasTranslations()
+            ->hasMigration('create_linter_redirections_table')
+          ;
     }
 }
