@@ -41,7 +41,7 @@ class RedirectionResource extends Resource
                     ->label(__('linter-redirections::redirections.fix_column'))
                     ->required(),
                 Forms\Components\TextInput::make('hash')
-                    ->label(__('linter-redirections::redirections.fix_column'))
+                    ->label(__('linter-redirections::redirections.hash_column'))
                     ->required()
                     ->readOnly()
                     ->unique('redirections', 'hash', ignoreRecord: true),

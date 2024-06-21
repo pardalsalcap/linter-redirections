@@ -40,7 +40,7 @@ return [
 To register the 404 or any Exception you like to monitor you can add the following code to your `app/Exceptions/Handler.php` file:
 
 ```php
-use Pardalsalcap\LinterRedirections\Repositories\RedirectionRepository;
+use Pardalsalcap\HialoRedirections\Repositories\RedirectionRepository;
 
 public function render($request, Throwable $e) {
     switch(class_basename($e)){
