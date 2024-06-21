@@ -2,6 +2,4 @@
 
 namespace Pardalsalcap\LinterRedirections;
 
-class LinterRedirections
-{
-}
+class LinterRedirections {}
