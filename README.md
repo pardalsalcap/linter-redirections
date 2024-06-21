@@ -63,6 +63,27 @@ public function render($request, Throwable $e) {
 }
 ```
 
+In Laravel 11 you can modify the /bootstrap/app.php file to add the following code:
+
+```php
+    ->withExceptions(function (Exceptions $exceptions) {
+        $exceptions->render(function (NotFoundHttpException $e, Request $request) {
+            $http_status = $e->getStatusCode();
+
+            $redirection_repository = new RedirectionRepository();
+            $redirection = $redirection_repository->check(request()->fullUrl());
+            if ($redirection) {
+                return redirect($redirection->fix, $redirection->http_status);
+            }
+
+            if ($http_status == "404")
+            {
+                $redirection_repository->logError(request()->fullUrl(), $http_status);
+            }
+            //return view('errors.404');
+        });
+    })
+```
 If you want to log any other exception you can add it to the switch case.
 
 ## Resources
