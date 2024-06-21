@@ -28,5 +28,7 @@ return [
     'stats_total_description' => 'Tienes :ls redirecciones/errores registradas',
     'view_all' => 'Ver todas',
     'widget_title' => 'Redirecciones y errores',
+    'no_redirections_yet' => 'No hay redirecciones',
+    'hash_column' => 'Código único de la redirección',
 
 ];
