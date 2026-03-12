@@ -5,6 +5,8 @@
 [![GitHub Code Style Action Status](https://img.shields.io/github/actions/workflow/status/pardalsalcap/linter-redirections/fix-php-code-style-issues.yml?branch=main&label=code%20style&style=flat-square)](https://github.com/pardalsalcap/linter-redirections/actions?query=workflow%3A"Fix+PHP+code+style+issues"+branch%3Amain)
 [![Total Downloads](https://img.shields.io/packagist/dt/pardalsalcap/linter-redirections.svg?style=flat-square)](https://packagist.org/packages/pardalsalcap/linter-redirections)
 
+V3.0.0 Last update with Filament 3 support
+
 This package is and add on to the linter panel to manage 404 and redirections. It includes a filament resource for managng and redirecting 404 and 2 widgets for the dashboard to get the information of the 404 and redirections.
 
 ## Installation
@@ -63,6 +65,27 @@ public function render($request, Throwable $e) {
 }
 ```
 
+In Laravel 11 you can modify the /bootstrap/app.php file to add the following code:
+
+```php
+    ->withExceptions(function (Exceptions $exceptions) {
+        $exceptions->render(function (NotFoundHttpException $e, Request $request) {
+            $http_status = $e->getStatusCode();
+
+            $redirection_repository = new RedirectionRepository();
+            $redirection = $redirection_repository->check(request()->fullUrl());
+            if ($redirection) {
+                return redirect($redirection->fix, $redirection->http_status);
+            }
+
+            if ($http_status == "404")
+            {
+                $redirection_repository->logError(request()->fullUrl(), $http_status);
+            }
+            //return view('errors.404');
+        });
+    })
+```
 If you want to log any other exception you can add it to the switch case.
 
 ## Resources
