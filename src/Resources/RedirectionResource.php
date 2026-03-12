@@ -2,12 +2,17 @@
 
 namespace Pardalsalcap\LinterRedirections\Resources;
 
-use Filament\Forms;
-use Filament\Forms\Form;
-use Filament\Forms\Get;
-use Filament\Forms\Set;
+use BackedEnum;
+use Filament\Actions\BulkActionGroup;
+use Filament\Actions\DeleteBulkAction;
+use Filament\Actions\EditAction;
+use Filament\Forms\Components\Select;
+use Filament\Forms\Components\TextInput;
 use Filament\Resources\Resource;
-use Filament\Tables;
+use Filament\Schemas\Components\Utilities\Get;
+use Filament\Schemas\Components\Utilities\Set;
+use Filament\Schemas\Schema;
+use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 use Pardalsalcap\LinterRedirections\Models\Redirection;
 use Pardalsalcap\LinterRedirections\Repositories\RedirectionRepository;
@@ -19,35 +24,35 @@ class RedirectionResource extends Resource
 {
     protected static ?string $model = Redirection::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-link';
+    protected static string|BackedEnum|null $navigationIcon = 'heroicon-o-link';
 
-    public static function form(Form $form): Form
+    public static function form(Schema $schema): Schema
     {
-        return $form
-            ->schema([
-                Forms\Components\TextInput::make('url')
+        return $schema
+            ->components([
+                TextInput::make('url')
                     ->url()
                     ->live(onBlur: true)
-                    ->reactive()
                     ->afterStateUpdated(function (Get $get, Set $set, $old, $state) {
                         if (! empty($state)) {
-                            $set('hash', (new RedirectionRepository())->hash($state));
+                            $set('hash', (new RedirectionRepository)->hash($state));
                         }
                     })
                     ->label(__('linter-redirections::redirections.url_column'))
                     ->required(),
-                Forms\Components\TextInput::make('fix')
+                TextInput::make('fix')
                     ->url()
                     ->label(__('linter-redirections::redirections.fix_column'))
                     ->required(),
-                Forms\Components\TextInput::make('hash')
+                TextInput::make('hash')
                     ->label(__('linter-redirections::redirections.hash_column'))
                     ->required()
                     ->readOnly()
                     ->unique('redirections', 'hash', ignoreRecord: true),
-                Forms\Components\Select::make('http_status')
+                Select::make('http_status')
                     ->label(__('linter-redirections::redirections.http_status_column'))
-                    ->options((new RedirectionRepository())->status()),
+                    ->options((new RedirectionRepository)->status())
+                    ->required(),
             ]);
     }
 
@@ -55,26 +60,27 @@ class RedirectionResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('url')
+                TextColumn::make('url')
                     ->label(__('linter-redirections::redirections.url_column'))
-                    ->url(fn (Redirection $redirection) => $redirection->url)->openUrlInNewTab(true)
+                    ->url(fn (Redirection $redirection) => $redirection->url)
+                    ->openUrlInNewTab()
                     ->searchable(),
-                Tables\Columns\TextColumn::make('fix')
+                TextColumn::make('fix')
                     ->label(__('linter-redirections::redirections.fix_column'))
                     ->searchable(),
-                Tables\Columns\TextColumn::make('http_status')
+                TextColumn::make('http_status')
                     ->label(__('linter-redirections::redirections.http_status_column'))
                     ->searchable(),
             ])
             ->filters([
                 //
             ])
-            ->actions([
-                Tables\Actions\EditAction::make(),
+            ->recordActions([
+                EditAction::make(),
             ])
-            ->bulkActions([
-                Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
+            ->toolbarActions([
+                BulkActionGroup::make([
+                    DeleteBulkAction::make(),
                 ]),
             ]);
     }

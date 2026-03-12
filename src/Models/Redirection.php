@@ -16,7 +16,7 @@ use Illuminate\Database\Eloquent\Model;
 class Redirection extends Model
 {
     /**
-     * @var array
+     * @var list<string>
      */
     protected $fillable = ['hash', 'url', 'fix', 'http_status', 'created_at', 'updated_at'];
 }

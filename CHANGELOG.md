@@ -2,6 +2,10 @@
 
 All notable changes to `linter-redirections` will be documented in this file.
 
+## v5.0.0
+
+Upgrade the package to Filament 5 and Laravel 11/12 compatibility.
+
 ## v3.0.0 - 2026-03-12
 
 Last release before upgrading to FIlament v5

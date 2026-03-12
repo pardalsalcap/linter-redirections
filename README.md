@@ -5,9 +5,11 @@
 [![GitHub Code Style Action Status](https://img.shields.io/github/actions/workflow/status/pardalsalcap/linter-redirections/fix-php-code-style-issues.yml?branch=main&label=code%20style&style=flat-square)](https://github.com/pardalsalcap/linter-redirections/actions?query=workflow%3A"Fix+PHP+code+style+issues"+branch%3Amain)
 [![Total Downloads](https://img.shields.io/packagist/dt/pardalsalcap/linter-redirections.svg?style=flat-square)](https://packagist.org/packages/pardalsalcap/linter-redirections)
 
-V3.0.0 Last update with Filament 3 support
+`main` targets Filament 5.
 
-This package is and add on to the linter panel to manage 404 and redirections. It includes a filament resource for managng and redirecting 404 and 2 widgets for the dashboard to get the information of the 404 and redirections.
+`v3.0.0` is the last release compatible with Filament 3.
+
+This package is an add-on for the Linter panel to manage 404s and redirections. It includes a Filament resource and two dashboard widgets.
 
 ## Installation
 
@@ -16,6 +18,8 @@ You can install the package via composer:
 ```bash
 composer require pardalsalcap/linter-redirections
 ```
+
+If you need Filament 3 compatibility, install `v3.0.0`.
 
 You can publish and run the migrations with:
 
@@ -42,7 +46,7 @@ return [
 To register the 404 or any Exception you like to monitor you can add the following code to your `app/Exceptions/Handler.php` file:
 
 ```php
-use Pardalsalcap\HialoRedirections\Repositories\RedirectionRepository;
+use Pardalsalcap\LinterRedirections\Repositories\RedirectionRepository;
 
 public function render($request, Throwable $e) {
     switch(class_basename($e)){
@@ -88,10 +92,9 @@ In Laravel 11 you can modify the /bootstrap/app.php file to add the following co
 ```
 If you want to log any other exception you can add it to the switch case.
 
-## Resources
+## Filament Resource
 
-You can extend the RedirecionsResource to add the ability to manage the redirections from the filament panel. 
-To do so you can create a Resource like this:
+To manage redirections from your Filament panel, create an app resource that extends the package resource:
 
 ```php
 <?php
@@ -107,7 +110,7 @@ class RedirectionResource extends \Pardalsalcap\LinterRedirections\Resources\Red
 
 ## Widgets
 
-To add the widgets to the dashboard you can add the following code to your filament panel widgets section:
+To add the widgets to your Filament panel dashboard, register them in your panel provider:
 
 ```php  
     RedirectionsStats::class,
