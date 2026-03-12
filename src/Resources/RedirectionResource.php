@@ -24,7 +24,7 @@ class RedirectionResource extends Resource
 {
     protected static ?string $model = Redirection::class;
 
-    protected static string | BackedEnum | null $navigationIcon = 'heroicon-o-link';
+    protected static string|BackedEnum|null $navigationIcon = 'heroicon-o-link';
 
     public static function form(Schema $schema): Schema
     {
@@ -35,7 +35,7 @@ class RedirectionResource extends Resource
                     ->live(onBlur: true)
                     ->afterStateUpdated(function (Get $get, Set $set, $old, $state) {
                         if (! empty($state)) {
-                            $set('hash', (new RedirectionRepository())->hash($state));
+                            $set('hash', (new RedirectionRepository)->hash($state));
                         }
                     })
                     ->label(__('linter-redirections::redirections.url_column'))
@@ -51,7 +51,7 @@ class RedirectionResource extends Resource
                     ->unique('redirections', 'hash', ignoreRecord: true),
                 Select::make('http_status')
                     ->label(__('linter-redirections::redirections.http_status_column'))
-                    ->options((new RedirectionRepository())->status())
+                    ->options((new RedirectionRepository)->status())
                     ->required(),
             ]);
     }
